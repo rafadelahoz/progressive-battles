@@ -1,0 +1,5 @@
+.DS_Store
+export
+**/DS_Store
+**/._*
+assets/images/*

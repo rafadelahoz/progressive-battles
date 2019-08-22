@@ -1,0 +1,79 @@
+{
+	"base": {
+		"uName": "base",
+		"name": "Base",
+		"def": 3,
+		"res": 20,
+		"funds": 1000,
+		"gfx-path": "assets/images/buildings.png",
+		"spriteColumn": 2,
+		"units": [
+			{
+				"unit": "infantry",
+				"cost": 1000
+			},
+			{
+				"unit": "mech",
+				"cost": 3000
+			},
+			{
+				"unit": "recon",
+				"cost": 4000
+			},
+			{
+				"unit": "tank",
+				"cost": 7000
+			},
+			{
+				"unit": "mdtank",
+				"cost": 16000
+			},
+			{
+				"unit": "neotank",
+				"cost": 22000
+			},
+			{
+				"unit": "apc",
+				"cost": 5000
+			},
+			{
+				"unit": "artillery",
+				"cost": 6000
+			},
+			{
+				"unit": "rlauncher",
+				"cost": 15000
+			},
+			{
+				"unit": "aairtank",
+				"cost": 8000
+			},
+			{
+				"unit": "mlauncher",
+				"cost": 12000
+			}
+		]
+	},
+
+	"hq": {
+		"uName": "hq",
+		"name": "HQ",
+		"def": 4,
+		"res": 20,
+		"funds": 1000,
+		"gfx-path": "assets/images/buildings.png",
+		"spriteColumn": 0,
+		"units": []
+	},
+
+	"city": {
+		"uName": "city",
+		"name": "City",
+		"def": 3,
+		"res": 20,
+		"funds": 1000,
+		"gfx-path": "assets/images/buildings.png",
+		"spriteColumn": 1,
+		"units": []
+	}
+}
