@@ -6,7 +6,6 @@ import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.TransitionData;
 
 import entities.Unit;
-import entities.Weapon;
 
 import ui.BattleCursor;
 import ui.BattleMenu;

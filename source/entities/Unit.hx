@@ -15,8 +15,6 @@ import utils.MapUtils.Path;
 import utils.Utils;
 import utils.data.UnitType;
 
-import entities.Item;
-import entities.Weapon;
 import utils.data.TilePoint;
 
 import ui.ProgressBar;
@@ -62,7 +60,6 @@ class Unit extends Entity {
 	public var movementType: UnitMovementType;
 
 	public var items: Array<Item>;
-	public var equippedWeapon: Weapon;
 
 	public var activePath: Path;
 
@@ -123,36 +120,11 @@ class Unit extends Entity {
 		avoidBonus = 0;
 
 		items = new Array<Item>();
-		equippedWeapon = null;
 
 		enable();
 		movementType = UnitMovementType.ONFOOT;
 
 		battle = BattleState.getInstance();
-	}
-
-	public function useItem(item: Item) {
-		if (Weapon.isWeapon(item)) {
-			equipWeapon(cast(item, Weapon));
-		} else {
-			trace(item.name + " is an item");
-		}
-	}
-
-	public function equipWeapon(weapon: Weapon) {
-		if (equippedWeapon != null)
-			equippedWeapon.setEquipped(false);
-
-		equippedWeapon = weapon;
-		atkRangeMin = weapon.minRange;
-		atkRangeMax = weapon.maxRange;
-
-		var index: Int = items.indexOf(weapon);
-		if (index >= 0) {
-			items.splice(index, 1);
-			items.insert(0, weapon);
-			weapon.setEquipped(true);
-		}
 	}
 
 	public function select(): Bool {
@@ -292,144 +264,6 @@ class Unit extends Entity {
 
 		super.update(elapsed);
 	}
-
-	/*public function getPhysicalPower(enemy: Unit): Int {
-		// Physical Attack = Strength + (Weapon Might + Weapon Triangle Bonus) X Weapon effectiveness + Support Bonus
-		var physicalPower: Int = cs.str;
-		var weaponBonus: Int = 0;
-
-		if (equippedWeapon != null) {
-			weaponBonus += equippedWeapon.might;
-		}
-
-		if (enemy.equippedWeapon != null) {
-			weaponBonus += Weapon.getDamageBonus(equippedWeapon, enemy.equippedWeapon);
-		}
-
-		return physicalPower + weaponBonus * 1;
-	}
-
-	public function getMagicalPower(): Int {
-		// Magical Attack = magic + (Magic Might + Trinity of Magic Bonus) X Magic Effectiveness + Support Bonus
-		return 0;
-	}
-
-	public function getDefensePower(): Int {
-		// DP = Terrain Bonus + Defense + Support Bonus
-		return defenseBonus + cs.def + 0;
-	}
-
-	public function getResistancePower(): Int {
-		return 0;
-	}
-
-	public function getAttackSpeed(): Int {
-		// If WWT ≤ Strength, then AS = Speed
-		// If WWT > Strength, then AS = Speed - (Weapon Weight - Strength)
-		if (equippedWeapon != null && equippedWeapon.weight > cs.str)
-			return cs.spd + cs.str - equippedWeapon.weight;
-
-		return cs.spd;
-	}
-
-	public function getHitRate(): Int {
-		// Hit Rate = Weapon Accuracy + Skill x 2 + Luck / 2 + Support Bonus + S-Rank Bonus
-		var hitRate: Int = 100;
-
-		if (equippedWeapon != null)
-			hitRate = equippedWeapon.hitRate;
-
-		return Std.int(hitRate + cs.skl * 2 + cs.lck / 2 + 0 + 0);
-	}
-
-	public function getEvasionRate(): Int {
-		// Evade = Attack Speed x 2 + Luck + Terrain Bonus + Support Bonus
-		return getAttackSpeed() * 2 + cs.lck + avoidBonus + 0;
-	}
-
-	public function repeatsAttack(enemy: Unit): Bool {
-		var doubleAttackThreshold = 4;
-
-		return (getAttackSpeed() - enemy.getAttackSpeed()) > doubleAttackThreshold;
-	}
-
-	public function getAccuracy(enemy: Unit): Int {
-		// Accuracy = Hit Rate (Attacker) - Evade (Defender) + Triangle Bonus
-		return Utils.min(100, Utils.max(0, getHitRate() - enemy.getEvasionRate() +
-			Weapon.getAccuracyBonus(equippedWeapon, enemy.equippedWeapon)));
-	}
-
-	public function calcPhysicalDamage(enemy: Unit): Int {
-		return Utils.max(getPhysicalPower(enemy) - enemy.getDefensePower(), 0);
-	}
-
-	public function calcMagicalDamage(enemy: Unit): Int {
-		return Utils.max(getMagicalPower() - enemy.getResistancePower(), 0);
-	}
-
-	public function attack(enemy: Unit, callback: Void -> Void) {
-		performAttack(enemy, 2, function() {
-			if (enemy.isAlive() && enemy.canCounterattack(this)) {
-				// Defender counter attacks
-				enemy.performAttack(this, 1 ,function() {
-					if (enemy.repeatsAttack(this) && isAlive()) {
-						// Defender attacks again
-						enemy.performAttack(this, 1, function() {
-							if (isAlive() && repeatsAttack(enemy)) {
-								// Attacker's second attack
-								performAttack(enemy, 2, function() {
-									callback();
-								});
-							} else {
-								callback();
-							}
-						});
-					} else if (isAlive() && repeatsAttack(enemy) && enemy.isAlive()) {
-						// Attacker's second attack
-						performAttack(enemy, 2, function() {
-							callback();
-						});
-					} else {
-						callback();
-					}
-				});
-			} else if (isAlive() && repeatsAttack(enemy) && enemy.isAlive()) {
-				// Attacker's second attack
-				performAttack(enemy, 2, function() {
-					callback();
-				});
-			} else {
-				callback();
-			}
-		});
-	}
-
-	private function performAttack(enemy: Unit, which: Int, callback: Void -> Void) {
-		var xDir: Int = Utils.sign0(enemy.pos.x - pos.x);
-		var yDir: Int = Utils.sign0(enemy.pos.y - pos.y);
-
-		FlxTween.tween(sprite, { x: sprite.x + xDir * 4, y: sprite.y + yDir * 4 }, 0.1, { onComplete: function(tween: FlxTween) {
-			FlxTween.tween(sprite, { x: sprite.x + xDir * -4, y: sprite.y + yDir * -4 }, 0.1);
-		} });
-
-		if (getAccuracy(enemy) >= Std.random(100)) {
-			enemy.setHP(Utils.max(0, enemy.cs.hp - calcPhysicalDamage(enemy)));
-
-			FlxSpriteUtil.flicker(enemy.sprite, 0.2, 0.05, true, function(flicker: FlxFlicker) {
-			});
-		} else {
-			// Attack misses
-		}
-	}
-
-	public function canCounterattack(enemy: Unit): Bool {
-		if (enemy != null) {
-			var distance = MapUtils.calcDistance(pos, enemy.pos);
-			return atkRangeMin >= distance && atkRangeMax <= distance;
-		}
-
-		return false;
-	}*/
 
 	public function isAlive(): Bool {
 		return cs.hp > 0;

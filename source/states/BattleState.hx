@@ -36,7 +36,6 @@ import utils.data.TilePoint;
 import utils.data.Set;
 import utils.Level;
 
-import entities.Weapon;
 import entities.Building;
 import entities.BuildingBase;
 

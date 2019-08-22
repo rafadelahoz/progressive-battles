@@ -11,8 +11,6 @@ class Data {
 
 	private static var instance: Data = null;
 
-	public var weaponList: Dynamic;
-	public var itemList: Dynamic;
 	public var unitList: Dynamic;
 	public var buildingList: Dynamic;
 	public var terrainList: Dynamic;
@@ -23,8 +21,6 @@ class Data {
 	public var terrains: Map<String, TerrainType>;
 
 	private function new() {
-		weaponList = loadJSONFromFile("assets/data/weapons.json");
-		itemList = loadJSONFromFile("assets/data/items.json");
 		unitList = loadJSONFromFile("assets/data/units.json");
 		buildingList = loadJSONFromFile("assets/data/buildings.json");
 		terrainList = loadJSONFromFile("assets/data/terrain.json");
