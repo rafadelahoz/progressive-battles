@@ -30,7 +30,8 @@ class TiledImage
 		var node:Fast, source:Fast;
 		
 		// Use the correct data format
-		if (Std.is(data, Fast))
+		// if (Std.is(data, Fast))
+		if (true)
 		{
 			source = data;
 		}

@@ -15,11 +15,11 @@ import utils.Data;
 import utils.data.TerrainType;
 
 class ViewPort {
-	public static inline var widthInTiles: Float = 15;
-	public static inline var heightInTiles: Float = 10;
-	public static inline var width: Float = 240;
-	public static inline var height: Float = 160;
-	public static inline var tileSize: Float = 16;
+	public static inline var widthInTiles: Int = 15;
+	public static inline var heightInTiles: Int = 10;
+	public static inline var width: Int = 240;
+	public static inline var height: Int = 160;
+	public static inline var tileSize: Int = 16;
 }
 
 class MapUtils {

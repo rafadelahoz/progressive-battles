@@ -1,8 +1,8 @@
 package states;
 
 import flixel.FlxG;
-import flixel.addons.transition.FlxTransitionableState;
-import flixel.addons.transition.TransitionData;
+// import flixel.addons.transition.FlxTransitionableState;
+// import flixel.addons.transition.TransitionData;
 import flixel.system.scaleModes.PixelPerfectScaleMode;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
@@ -81,8 +81,8 @@ class BattleState extends MapState {
 		super.create();
 		instance = this;
 
-		transIn = new TransitionData(TransitionType.TILES, FlxColor.BLACK, 1.0);
-		transOut = new TransitionData(TransitionType.TILES, FlxColor.BLACK, 1.0);
+		/*transIn = new TransitionData(TransitionType.TILES, FlxColor.BLACK, 1.0);
+		transOut = new TransitionData(TransitionType.TILES, FlxColor.BLACK, 1.0);*/
 		FlxG.scaleMode = new PixelPerfectScaleMode();
 
 		turn = 1;
@@ -97,7 +97,7 @@ class BattleState extends MapState {
 		scene.getLayer("map").add(level.backgroundTiles);
 
 		FlxG.camera.bgColor = FlxColor.WHITE;
-		FlxG.camera.setSize(level.width * ViewPort.tileSize, level.height * ViewPort.tileSize);
+		FlxG.camera.setSize(Std.int(level.width * ViewPort.tileSize), Std.int(level.height * ViewPort.tileSize));
 
 		scene.addLayer("buildings");
 		buildings = new Map<Int, Building>();
@@ -874,9 +874,9 @@ class BattleState extends MapState {
 		cursorOnFirstUnit();
 		coDialog.refresh();
 
-		transitionOut(function() {
+		/*transitionOut(function() {
 			transitionIn();
-		});
+		});*/
 	}
 
 	public function cursorOnFirstUnit() {

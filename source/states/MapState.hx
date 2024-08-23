@@ -1,9 +1,10 @@
 package states;
 
+import flixel.FlxState;
 import flixel.FlxG;
 import flixel.util.FlxColor;
-import flixel.addons.transition.FlxTransitionableState;
-import flixel.addons.transition.TransitionData;
+// import flixel.addons.transition.FlxTransitionableState;
+// import flixel.addons.transition.TransitionData;
 
 import entities.Unit;
 
@@ -18,7 +19,7 @@ import utils.MapUtils;
 import utils.data.TilePoint;
 import utils.Scene;
 
-class MapState extends FlxTransitionableState {
+class MapState extends FlxState {
 	public var scene: Scene;
 	public var players: Array<Player>;
 
@@ -38,7 +39,7 @@ class MapState extends FlxTransitionableState {
 		players = new Array<Player>();
 
 		FlxG.camera.bgColor = FlxColor.WHITE;
-		FlxG.camera.setSize(level.width * ViewPort.tileSize, level.height * ViewPort.tileSize);
+		FlxG.camera.setSize(Std.int(level.width * ViewPort.tileSize), Std.int(level.height * ViewPort.tileSize));
 	}
 
 	public function moveViewport(x: Int, y: Int) {

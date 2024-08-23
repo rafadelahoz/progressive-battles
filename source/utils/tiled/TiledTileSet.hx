@@ -151,11 +151,12 @@ public inline function getProperties(ID:Int):TiledPropertySet
 		var source : Fast;
 
 		// Use the correct data format
-		if (Std.is(data, Fast))
+		// if (Std.is(data, Fast))
+		if (true)
 		{
 			source = data;
 		}
-		else if (Std.is(data, ByteArray))
+		else if (true)//(Std.is(data, ByteArray))
 		{
 			source = new Fast(Xml.parse(data.toString()));
 			source = source.node.tileset;

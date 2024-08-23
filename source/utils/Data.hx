@@ -1,6 +1,11 @@
 package utils;
 
+import lime.utils.Resource;
+#if html5
+import lime.utils.Assets;
+#else
 import sys.io.File;
+#end
 import haxe.Json;
 
 import utils.data.UnitType;
@@ -61,7 +66,11 @@ class Data {
 		return instance;
 	}
 
-	public static function loadJSONFromFile(path: String): Dynamic {
+	public static function loadJSONFromFile(path: String): Dynamic {		
+		#if html5
+		return Json.parse(Assets.getText(path));
+		#else
 		return Json.parse(File.getContent(path));
+		#end
 	}
 }
